@@ -140,17 +140,13 @@ Set the source of the life measurement to Aircraft and the life units to hours. 
 
 ### 6. Creating a Component Manually
 
-To create a component, a combination of Product and ASI needs to be defined on a document or in the Component Tracking window.  We will use the later to define the aircraft component.  Open the Component Tracking window and set the product to the generic C-150L product.  Note that the Life Usage Source is filled in as "Aircraft" from the model and the Life Use UOM is set to Hour.  
+To create a component, a combination of Product and ASI needs to be defined on a document or in the Component Tracking window.  We will use the later to define the aircraft component.  Open the Component Tracking window and set the product to the generic C-150L product.  Note that the Life Usage Source is filled in as "Aircraft" from the model and the Life Use UOM is set to Hour.
 
 ![](/assets/CT_CompTrackingWindow%28C-150LNew%29.png)
 
 The Attribute Set Instance field will be highlighted red, indicating it is mandatory as the Product has an Attribute Set that has instance attributes.  A manual entry of these values is required.  Click on the Attribute Set Instance helper button and the following dialog will appear.  Here, the product attribute values are read only and the instance attribute values can be set.  In this example, the Registration is set to C-FJZP and the Serial Number to the airframe serial number.
 
-
-
 ![](/assets/CT_CompTrackingWindow%28C-150LNewASI%29.png)
-
-
 
 After completing the Attribute Set Instance dialog and confirming the values, save the Component record.
 
@@ -162,7 +158,7 @@ Note that the Life Used amount in the Component Tracking window and history is z
 
 #### 7. Connect the Top Level component to an Aircraft
 
-Open the Fleet Maintenance Window and find the record for C-FJZP.  Select the component just created in the "Top Component" field.  Save the record.  
+Open the Fleet Maintenance Window and find the record for C-FJZP.  Select the component just created in the "Top Component" field.  Save the record.
 
 ![](/assets/CT_FleetMaintenanceAircraft.png)
 
@@ -170,7 +166,13 @@ Return to the Component Tracking window and note that the Life Used has been fil
 
 To create components for all other aircraft in the Fleet, only steps 6. and 7. need be repeated for each aircraft.
 
-## Configuring Component BIlls of Material
+## Configuring Component Bills of Material
+
+A component Bill of Material \(BOM\) is identical to a product BOM except the component BOM can contain other components.
+
+Configuring a Component BOM starts with a Product BOM.  The Product BOM is copied to every associated component as a sort of empty tree.  Sub components can be added to the "assembly" manually or through work order processes.
+
+The initial configuration of the component is best performed manually.
 
 
 
