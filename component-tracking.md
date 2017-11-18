@@ -106,6 +106,8 @@ Now create the instance attribute for the AC registration.  Since the product is
 
 ![](/assets/Attribute%28reg%29.png)
 
+#### 3. Create an Attribute Set
+
 With the attributes defined, we can create an Attribute Set which will include these attributes and define a serial number as another instance attribute. Select the Serial No. and make it mandatory.
 
 ![](/assets/AttributeSet%28AC%29.png)
@@ -114,7 +116,9 @@ Under the Attribute Use tab, select the three attributes created above.
 
 ![](/assets/AttributeUse%28AC%29.png)
 
-We are now ready to define a product that makes use of the Attribute Set.  Open the Product Window and create an entry for the C-150L product.  Select "Track as Component" and set the Attribute Set to "Aircraft" as defined above.  In the Attribute Set Instance (ASI) field, click the helper button to open a dialog where the values of the Attributes can be completed.  Fill this in as shown below.
+#### 4. Define the Component Product
+
+We are now ready to define a product that makes use of the Attribute Set.  Open the Product Window and create an entry for the C-150L product.  Select "Track as Component" and set the Attribute Set to "Aircraft" as defined above.  In the Attribute Set Instance \(ASI\) field, click the helper button to open a dialog where the values of the Attributes can be completed.  Fill this in as shown below.
 
 ![](/assets/ProductASI%28new C-150L%29.png)
 
@@ -124,11 +128,49 @@ After saving the attribute set instance, the product record should appear as fol
 
 At this point we have a product and a product Attribute Set Instance.  Note that the ASI field does not contain a registration or a serial number.  These attributes of the ASI will be filled in when the product is referenced in a document or the Component Tracking window.
 
-To make it easier to manage a large number of components, a Component Life Cycle Model can be used to define the life cycle.  When individual components are created, the model values are copied to the component, saving time in manual entry.  
+#### 5. Define a Component Life Cycle Model
+
+To make it easier to manage a large number of components, a Component Life Cycle Model can be used to define the life cycle.  When individual components are created, the model values are copied to the component, saving time in manual entry.
 
 To create a model, open the Component Life Cycle Model window and create a record for Aircraft that have an unlimited life. Apply the model to the Aircraft product group so it will be used by all components from all products of that group.
 
 Set the source of the life measurement to Aircraft and the life units to hours.  This means that the component life and the Aircraft airframe time will be linked.  For subcomponents, the life usage source can be set to Parent Component, in which case the sub-component's life will increase as the parent component's life increases.
 
 ![](/assets/CompLifeCycle%28Aircraft%29.png)
+
+### 6. Creating a Component Manually
+
+To create a component, a combination of Product and ASI needs to be defined on a document or in the Component Tracking window.  We will use the later to define the aircraft component.  Open the Component Tracking window and set the product to the generic C-150L product.  Note that the Life Usage Source is filled in as "Aircraft" from the model and the Life Use UOM is set to Hour.  
+
+![](/assets/CT_CompTrackingWindow%28C-150LNew%29.png)
+
+The Attribute Set Instance field will be highlighted red, indicating it is mandatory as the Product has an Attribute Set that has instance attributes.  A manual entry of these values is required.  Click on the Attribute Set Instance helper button and the following dialog will appear.  Here, the product attribute values are read only and the instance attribute values can be set.  In this example, the Registration is set to C-FJZP and the Serial Number to the airframe serial number.
+
+
+
+![](/assets/CT_CompTrackingWindow%28C-150LNewASI%29.png)
+
+
+
+After completing the Attribute Set Instance dialog and confirming the values, save the Component record.
+
+In the History tab, there will now be a record that shows the Component was created.
+
+![](/assets/CT_CompTrackingWindow-History%28C_FJZP%29.png)
+
+Note that the Life Used amount in the Component Tracking window and history is zero.  To connect the component with the Aircraft, we need to add the Component link on the Fleet Maintenance window.
+
+#### 7. Connect the Top Level component to an Aircraft
+
+Open the Fleet Maintenance Window and find the record for C-FJZP.  Select the component just created in the "Top Component" field.  Save the record.  
+
+![](/assets/CT_FleetMaintenanceAircraft.png)
+
+Return to the Component Tracking window and note that the Life Used has been filled in with the airframe life of the Aircraft.  From now on, as the Aircraft hours increase, the component life will also increase.
+
+To create components for all other aircraft in the Fleet, only steps 6. and 7. need be repeated for each aircraft.
+
+## Configuring Component BIlls of Material
+
+
 
