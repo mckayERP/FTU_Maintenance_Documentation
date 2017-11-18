@@ -86,11 +86,49 @@ For the product, we will use a generic Cessna 150L model.  There are many attrib
 
 We will also create an instance attribute which will only be valid when a component - an instance of the product - is defined.  The instance attributes will be the aircraft registration.  When the attribute set is defined, we will include a serial number.
 
-![](/assets/Attribute%28make-list%29.png)![](/assets/AttributeValues%28make-list%29.png)![](/assets/Attribute%28model-list%29.png)![](/assets/AttributeValues%28model-list%29.png)![](/assets/Attribute%28reg%29.png)![](/assets/AttributeSet%28AC%29.png)![](/assets/AttributeUse%28AC%29.png)
+Start by defining the attribute for the Aircraft Make.  Open the Attribute Window and create a record for the AC Make.  Make it mandatory and set the Attribute Value Type to list as shown below.
+
+![](/assets/Attribute%28make-list%29.png)
+
+Next, open the Attribute Value tab and create two records for the relevant aircraft in operation: Cessna and Beechcraft.
+
+![](/assets/AttributeValues%28make-list%29.png)
+
+For the Aircraft Model attribute, create a new Attribute list as follows:
+
+![](/assets/Attribute%28model-list%29.png)
+
+Set the AC Model values to the models of interest.
+
+![](/assets/AttributeValues%28model-list%29.png)
+
+Now create the instance attribute for the AC registration.  Since the product is generic, the registration will be an instance attribute.  Make the Attribute Value Type a String and also make the attribute mandatory and an instance attribute.
+
+![](/assets/Attribute%28reg%29.png)
+
+With the attributes defined, we can create an Attribute Set which will include these attributes and define a serial number as another instance attribute. Select the Serial No. and make it mandatory.
+
+![](/assets/AttributeSet%28AC%29.png)
+
+Under the Attribute Use tab, select the three attributes created above.
+
+![](/assets/AttributeUse%28AC%29.png)
+
+We are now ready to define a product that makes use of the Attribute Set.  Open the Product Window and create an entry for the C-150L product.  Select "Track as Component" and set the Attribute Set to "Aircraft" as defined above.  In the Attribute Set Instance (ASI) field, click the helper button to open a dialog where the values of the Attributes can be completed.  Fill this in as shown below.
 
 ![](/assets/ProductASI%28new C-150L%29.png)
 
+After saving the attribute set instance, the product record should appear as follows:
 
+![](/assets/Product%28AC%29.png)
 
-![](/assets/Product%28AC%29.png)![](/assets/CompLifeCycle%28Aircraft%29.png)
+At this point we have a product and a product Attribute Set Instance.  Note that the ASI field does not contain a registration or a serial number.  These attributes of the ASI will be filled in when the product is referenced in a document or the Component Tracking window.
+
+To make it easier to manage a large number of components, a Component Life Cycle Model can be used to define the life cycle.  When individual components are created, the model values are copied to the component, saving time in manual entry.  
+
+To create a model, open the Component Life Cycle Model window and create a record for Aircraft that have an unlimited life. Apply the model to the Aircraft product group so it will be used by all components from all products of that group.
+
+Set the source of the life measurement to Aircraft and the life units to hours.  This means that the component life and the Aircraft airframe time will be linked.  For subcomponents, the life usage source can be set to Parent Component, in which case the sub-component's life will increase as the parent component's life increases.
+
+![](/assets/CompLifeCycle%28Aircraft%29.png)
 
