@@ -84,7 +84,7 @@ Open the Product window and create a new product record.  Select the checkbox "T
 
 **Attributes** can be thought of as specifications.  There are two types: **Product Attributes** and **Instance Attributes**.  Instance Attributes have values that are specific to an instance of a product - things like a serial number, lot code, guarantee date or any other value that uniquely identifies an individual product. The Product Attributes define specifications that do not change from instance to instance. For example, the Product Attributes could include the "details" of the product shown on a website.
 
-For component tracking, its important that the base product of the component have an **Attribute Set** defined.  Instance Attribute defined, ideally a serial number.  Without the instance, the component is no different then the product and tracking through a life-cycle is not possible.  This may be the case for consummable items like applied paint or nuts and bolts and tracking these items may not be important. However, there is often a need to replace such consumables after a single use.  In these 
+For component tracking, its important that the base product of the component have an **Attribute Set** defined.  Instance Attribute defined, ideally a serial number.  Without the instance, the component is no different then the product and tracking through a life-cycle is not possible.  This may be the case for consummable items like applied paint or nuts and bolts and tracking these items may not be important. However, there is often a need to replace such consumables after a single use.  In these cases, the product should have at least one Product Attribute defined.
 
 For the product, we will use a generic Cessna 150L model.  There are many attributes that could be added to this product as specifications but the key ones we will use are the Manufacturer Name or Make and the Model.  If desired, additional attributes could be added for spec data such as fuel type, empty weight, etc...
 
@@ -132,11 +132,25 @@ After saving the attribute set instance, the product record should appear as fol
 
 At this point we have a product and a product Attribute Set Instance.  Note that the ASI field does not contain a registration or a serial number.  These attributes of the ASI will be filled in when the product is referenced in a document or the Component Tracking window.
 
+##### Defining Substitue Products
 
+In some cases, it may be necessary to define multiple products for a component.  This can be helpful if there are several manufacturers of a replacement part, each using a different model and part number for compatible and interchangable parts.  Starter moters are a good example.  There are many suppliers that build or overhaul starter motors that are compatible with a given engine and which are interchangeable.  One make/model of started motor can be substituted for another in the engine assembly.
+
+To define the list of acceptable substitutes, first create product records for the interchangeable parts.  Then, on at least one, but preferably all, of the products, open the Substitute tab of the Product Window and add the other interchangeable products.  If you only do this on one product, that product should used on the main Product BOM as the "master product".  Having done this, when a sub-component is being created as part of a  component BOM, or replaced in a maintenance action, the new/replacement product will be selected from the master product and its set of substitues.  The figure below shows the Product Installed combobox expanded with the list of substitute products defined for the EQ starter on a O-200-A Continental Motor.
+
+![](/assets/CT_CompBOMLineProdInstalledSubList.png)
 
 #### 5. Define a Component Life Cycle Model
 
-To make it easier to manage a large number of components, a Component Life Cycle Model can be used to define the life cycle.  When individual components are created, the model values are copied to the component, saving time in manual entry.
+To make it easier to manage a large number of components, a Component Life Cycle Model can be used to define the life cycle.  When individual components are created, the model values are copied to the component, saving time in manual entry and ensuring that the life units and measures are accurate.
+
+The component life an vary significantly from product to product.  Certain products have a life measured in time, others in use and some have an unlimited life.  The Life Cycle model allows the life usage source to be specified as follows:
+
+* Aircraft - the component life is tied to an aircraft and the component must be identified on the Aircraft tab of the Fleet Management window.  The life of the component will match the airframe time of the aircraft.  Only the top level component that represents the aircraft should use this Life Usage Source.
+* Count of Installations - used for components where the life is measured by the number of times the component is installed and removed.  In some cases, such as self-locking nuts, the item can be used once and should be scrapped once uninstalled.
+* Inherit from Parent - here the sub component will measure its life in the same way as its parent component.  In this case, if the parent component life measure is increased by a unit, the sub-componet life will also be increased by a unit.  This is useful, for example, in aircraft parts that measure life in airframe hours.  The top level component would have a life of Aircraft and all sub-components that have the Life Usage Source set to Inherit from Parent would be increased as the Aircraft component life was increased.
+* Not Tracked - here the component life usage is not measured.  This is relevant where the life is measured by date/age and not usage.
+* Use a Query - a specialized choice that allows the user to construct a query that will return the current life usage of a component based on data in the database.  The query can be configured to run periodically.
 
 To create a model, open the Component Life Cycle Model window and create a record for Aircraft that have an unlimited life. Apply the model to the Aircraft product group so it will be used by all components from all products of that group.
 
@@ -150,7 +164,9 @@ To create a component, a combination of Product and ASI needs to be defined on a
 
 ![](/assets/CT_CompTrackingWindow%28C-150LNew%29.png)
 
-The Attribute Set Instance field will be highlighted red, indicating it is mandatory as the Product has an Attribute Set that has instance attributes.  A manual entry of these values is required.  Click on the Attribute Set Instance helper button and the following dialog will appear.  Here, the product attribute values are read only and the instance attribute values can be set.  In this example, the Registration is set to C-FJZP and the Serial Number to the airframe serial number.
+The Attribute Set Instance field will be highlighted red, indicating it is mandatory as the Product has an Attribute Set that has instance attributes.  A manual entry of these values is required.  Click on the Attribute Set Instance helper button and the following dialog will appear.  Here, the product attribute values are read only and the instance attribute values can be set.  In this example, the Registration is set to C-FJZP and the Serial Number to the airframe serial number
+
+
 
 ![](/assets/CT_CompTrackingWindow%28C-150LNewASI%29.png)
 
@@ -186,6 +202,4 @@ The initial configuration of the component is best performed manually.  The step
 4. Populate the component assemblies with sub-components.
 
 If changes are made to the Product BOM at a later time, A process "Update Component BOMs" will make the same changes to all the effected components.
-
-
 
