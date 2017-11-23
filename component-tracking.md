@@ -82,6 +82,10 @@ Open the Product window and create a new product record.  Select the checkbox "T
 
 #### 2. Create Attributes
 
+**Attributes** can be thought of as specifications.  There are two types: **Product Attributes** and **Instance Attributes**.  Instance Attributes have values that are specific to an instance of a product - things like a serial number, lot code, guarantee date or any other value that uniquely identifies an individual product. The Product Attributes define specifications that do not change from instance to instance. For example, the Product Attributes could include the "details" of the product shown on a website.
+
+For component tracking, its important that the base product of the component have an **Attribute Set** defined.  Instance Attribute defined, ideally a serial number.  Without the instance, the component is no different then the product and tracking through a life-cycle is not possible.  This may be the case for consummable items like applied paint or nuts and bolts and tracking these items may not be important. However, there is often a need to replace such consumables after a single use.  In these 
+
 For the product, we will use a generic Cessna 150L model.  There are many attributes that could be added to this product as specifications but the key ones we will use are the Manufacturer Name or Make and the Model.  If desired, additional attributes could be added for spec data such as fuel type, empty weight, etc...
 
 We will also create an instance attribute which will only be valid when a component - an instance of the product - is defined.  The instance attributes will be the aircraft registration.  When the attribute set is defined, we will include a serial number.
@@ -128,6 +132,8 @@ After saving the attribute set instance, the product record should appear as fol
 
 At this point we have a product and a product Attribute Set Instance.  Note that the ASI field does not contain a registration or a serial number.  These attributes of the ASI will be filled in when the product is referenced in a document or the Component Tracking window.
 
+
+
 #### 5. Define a Component Life Cycle Model
 
 To make it easier to manage a large number of components, a Component Life Cycle Model can be used to define the life cycle.  When individual components are created, the model values are copied to the component, saving time in manual entry.
@@ -168,11 +174,18 @@ To create components for all other aircraft in the Fleet, only steps 6. and 7. n
 
 ## Configuring Component Bills of Material
 
-A component Bill of Material \(BOM\) is identical to a product BOM except the component BOM can contain other components.
+A component Bill of Material \(BOM\) is identical to a product BOM except the component BOM contains other components.
 
-Configuring a Component BOM starts with a Product BOM.  The Product BOM is copied to every associated component as a sort of empty tree.  Sub components can be added to the "assembly" manually or through work order processes.
+Configuring a Component BOM starts with a Product BOM.  The Product BOM is copied to every associated component as an empty BOM tree.  Sub components can be added to the "assembly" manually or through work order processes.
 
-The initial configuration of the component is best performed manually.
+The initial configuration of the component is best performed manually.  The steps involved are:
+
+1. Create Component Life Cycle Models, Attribute Sets and Products for each BOM line item.  There needs to be a product for each "assembly" level of the BOM as well as for the lowest level parts.
+2. Construct the Product BOM for each assembly.
+3. Create the top-level component for each assembly.
+4. Populate the component assemblies with sub-components.
+
+If changes are made to the Product BOM at a later time, A process "Update Component BOMs" will make the same changes to all the effected components.
 
 
 
