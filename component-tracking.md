@@ -136,7 +136,7 @@ At this point we have a product and a product Attribute Set Instance.  Note that
 
 In some cases, it may be necessary to define multiple products for a component.  This can be helpful if there are several manufacturers of a replacement part, each using a different model and part number for compatible and interchangable parts.  Starter moters are a good example.  There are many suppliers that build or overhaul starter motors that are compatible with a given engine and which are interchangeable.  One make/model of started motor can be substituted for another in the engine assembly.
 
-To define the list of acceptable substitutes, first create product records for the interchangeable parts.  Then, on at least one, but preferably all, of the products, open the Substitute tab of the Product Window and add the other interchangeable products.  If you only do this on one product, that product should used on the main Product BOM as the "master product".  Having done this, when a sub-component is being created as part of a  component BOM, or replaced in a maintenance action, the new/replacement product will be selected from the master product and its set of substitues.  The figure below shows the Product Installed combobox expanded with the list of substitute products defined for the EQ starter on a O-200-A Continental Motor.
+To define the list of acceptable substitutes, first create product records for the interchangeable parts.  Then, on at least one, but preferably all, of the products, open the Substitute tab of the Product Window and add the other interchangeable products.  If you only do this on one product, that product should be referenced in the main Product BOM.  It will appear as the "master product" on the Component BOM Line.  Having done this, when a sub-component is being created as part of a  component BOM, or replaced in a maintenance action, the new/replacement product will be selected from the master product and its set of substitues.  The figure below shows the Product Installed combobox expanded with a list of substitute products defined for the EQ starter on a O-200-A Continental Motor.
 
 ![](/assets/CT_CompBOMLineProdInstalledSubList.png)
 
@@ -144,13 +144,13 @@ To define the list of acceptable substitutes, first create product records for t
 
 To make it easier to manage a large number of components, a Component Life Cycle Model can be used to define the life cycle.  When individual components are created, the model values are copied to the component, saving time in manual entry and ensuring that the life units and measures are accurate.
 
-The component life an vary significantly from product to product.  Certain products have a life measured in time, others in use and some have an unlimited life.  The Life Cycle model allows the life usage source to be specified as follows:
+The Component Life Cycle Model can vary significantly from product to product.  Certain products have a life measured in time, others in use and some have an unlimited life.  When assessing the Life Used of a component, a source of data is required.  The Life Cycle Model allows the life usage source to be specified as follows:
 
 * Aircraft - the component life is tied to an aircraft and the component must be identified on the Aircraft tab of the Fleet Management window.  The life of the component will match the airframe time of the aircraft.  Only the top level component that represents the aircraft should use this Life Usage Source.
 * Count of Installations - used for components where the life is measured by the number of times the component is installed and removed.  In some cases, such as self-locking nuts, the item can be used once and should be scrapped once uninstalled.
-* Inherit from Parent - here the sub component will measure its life in the same way as its parent component.  In this case, if the parent component life measure is increased by a unit, the sub-componet life will also be increased by a unit.  This is useful, for example, in aircraft parts that measure life in airframe hours.  The top level component would have a life of Aircraft and all sub-components that have the Life Usage Source set to Inherit from Parent would be increased as the Aircraft component life was increased.
+* Inherit from Parent - here the sub component will measure its life in the same way as its parent component.  In this case, if the parent component life measure is increased by a unit, the sub-componet life will also be increased by a unit.  This is useful, for example, in aircraft parts that measure life in airframe hours.  The top level component would have a life usage source of Aircraft and all sub-components that have the Life Usage Source set to Inherit from Parent would be increased as the Aircraft airframe time was increased.
 * Not Tracked - here the component life usage is not measured.  This is relevant where the life is measured by date/age and not usage.
-* Use a Query - a specialized choice that allows the user to construct a query that will return the current life usage of a component based on data in the database.  The query can be configured to run periodically.
+* Use a Query - a specialized choice that allows the user to construct a query that will return the current life usage of a component based on data in the database.  The server can be configured to run the query periodically.
 
 To create a model, open the Component Life Cycle Model window and create a record for Aircraft that have an unlimited life. Apply the model to the Aircraft product group so it will be used by all components from all products of that group.
 
@@ -165,8 +165,6 @@ To create a component, a combination of Product and ASI needs to be defined on a
 ![](/assets/CT_CompTrackingWindow%28C-150LNew%29.png)
 
 The Attribute Set Instance field will be highlighted red, indicating it is mandatory as the Product has an Attribute Set that has instance attributes.  A manual entry of these values is required.  Click on the Attribute Set Instance helper button and the following dialog will appear.  Here, the product attribute values are read only and the instance attribute values can be set.  In this example, the Registration is set to C-FJZP and the Serial Number to the airframe serial number
-
-
 
 ![](/assets/CT_CompTrackingWindow%28C-150LNewASI%29.png)
 
@@ -201,5 +199,13 @@ The initial configuration of the component is best performed manually.  The step
 3. Create the top-level component for each assembly.
 4. Populate the component assemblies with sub-components.
 
-If changes are made to the Product BOM at a later time, A process "Update Component BOMs" will make the same changes to all the effected components.
+If changes are made to the Product BOM at a later time, a process called "Update Component BOMs" will make the same changes to all the effected components.
+
+Constructing the Product BOM is done using the BOM tab of the Product Window.  The header of the BOM can be filled out as required but the **BOM Use must be set to "Master" **and the "Valid from" date set.  It is possible to create multiple BOM header records but the one used to make component BOMs will be one that has the "BOM Use" = "Master" with  "Valid from/to" date. The "Valid to" date can be blank.
+
+BOM Line items will be applied to the component BOM only if the associated product has "Track As Component" selected.
+
+Since most of the quantities of components are instances, the BOM quantity will be set to one \(1\) for the component lines where the product attribute set has instance attributes.
+
+
 
